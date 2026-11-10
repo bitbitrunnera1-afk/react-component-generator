@@ -1,0 +1,556 @@
+/* 클래식 매킨토시(System 7) 풍: 흑백 창 + 포인트 색 하나(코발트) */
+
+/* ---------- 메뉴바 ---------- */
+
+.menubar {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  gap: 22px;
+  height: 32px;
+  padding: 0 16px;
+  background: var(--white);
+  border-bottom: 2px solid var(--ink);
+  font-size: 13px;
+}
+
+.menubar-name {
+  font-weight: 400;
+  letter-spacing: 0.02em;
+}
+
+.menubar-spacer {
+  flex: 1;
+}
+
+/* ---------- 바탕화면 / 창 ---------- */
+
+.desktop {
+  width: min(1180px, 100%);
+  margin: 0 auto;
+  padding: 36px 24px 72px;
+}
+
+.win {
+  min-width: 0;
+  background: var(--white);
+  border: 2px solid var(--ink);
+  box-shadow: 4px 4px 0 var(--ink);
+}
+
+.win-title {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 24px;
+  border-bottom: 2px solid var(--ink);
+  background: repeating-linear-gradient(
+    180deg,
+    var(--white) 0,
+    var(--white) 3px,
+    var(--ink) 3px,
+    var(--ink) 4px
+  );
+  background-clip: padding-box;
+}
+
+.win-title span {
+  padding: 0 12px;
+  background: var(--white);
+  font-size: 13px;
+  line-height: 24px;
+}
+
+.win-body {
+  padding: 22px 24px 26px;
+}
+
+.workspace {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 320px;
+  gap: 28px;
+  align-items: start;
+  margin-bottom: 28px;
+}
+
+/* 헤드라인은 비트맵 폰트의 정수배(22px)로 또렷하게 */
+.win-body h1 {
+  font-size: 22px;
+  font-weight: 400;
+  line-height: 1.4;
+  word-break: keep-all;
+}
+
+.lead {
+  max-width: 54ch;
+  margin: 8px 0 20px;
+  line-height: 1.75;
+  word-break: keep-all;
+}
+
+/* ---------- 입력 ---------- */
+
+.prompt-form {
+  display: grid;
+  gap: 14px;
+}
+
+.prompt-textarea,
+.field select,
+.api-key-field input {
+  width: 100%;
+  background: var(--white);
+  border: 2px solid var(--ink);
+  border-radius: 0;
+  box-shadow: inset 2px 2px 0 rgba(0, 0, 0, 0.18);
+  color: var(--ink);
+}
+
+.prompt-textarea {
+  min-height: 132px;
+  padding: 12px 14px;
+  resize: vertical;
+  line-height: 1.7;
+}
+
+.prompt-textarea::placeholder,
+.api-key-field input::placeholder {
+  color: #6b6b6b;
+}
+
+.field select,
+.api-key-field input {
+  height: 38px;
+  padding: 0 10px;
+}
+
+.field select {
+  cursor: pointer;
+}
+
+.field + .field {
+  margin-top: 18px;
+}
+
+.field label {
+  display: block;
+  margin-bottom: 6px;
+}
+
+.api-key-field {
+  display: flex;
+  gap: 8px;
+}
+
+.api-key-field input {
+  min-width: 0;
+  font-family: var(--font-mono);
+  font-size: 12px;
+}
+
+.key-status {
+  margin-top: 8px;
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+.key-status--ready::before {
+  content: '✔ ';
+  color: var(--accent);
+}
+
+/* 선택, 포커스는 코발트로 통일 */
+.prompt-textarea:focus-visible,
+.field select:focus-visible,
+.api-key-field input:focus-visible,
+.btn:focus-visible,
+.btn-generate:focus-visible,
+.example-chip:focus-visible,
+.tab:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* ---------- 버튼 ---------- */
+
+.btn,
+.btn-generate {
+  min-height: 34px;
+  padding: 0 16px;
+  background: var(--white);
+  border: 2px solid var(--ink);
+  border-radius: 8px;
+  color: var(--ink);
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.btn:hover:not(:disabled),
+.btn-generate:hover:not(:disabled) {
+  background: var(--ink);
+  color: var(--white);
+}
+
+.btn:active:not(:disabled),
+.btn-generate:active:not(:disabled) {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--white);
+}
+
+.btn:disabled,
+.btn-generate:disabled {
+  border-color: #8a8a8a;
+  color: #8a8a8a;
+  cursor: not-allowed;
+}
+
+.btn-toggle-key {
+  flex: 0 0 auto;
+  height: 38px;
+}
+
+.btn-refresh {
+  width: 36px;
+  padding: 0;
+}
+
+/* 기본 버튼은 이중 테두리로 표시한다 */
+.btn-generate {
+  justify-self: start;
+  min-height: 40px;
+  padding: 0 26px;
+  box-shadow: 0 0 0 3px var(--white), 0 0 0 5px var(--ink);
+  margin: 5px;
+}
+
+.btn-generate:disabled {
+  box-shadow: 0 0 0 3px var(--white), 0 0 0 5px #8a8a8a;
+}
+
+/* ---------- 예시 목록: Finder 목록 스타일 ---------- */
+
+.prompt-examples {
+  margin-top: 26px;
+}
+
+.examples-label {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 12px;
+}
+
+.prompt-examples ul {
+  list-style: none;
+  border: 2px solid var(--ink);
+}
+
+.prompt-examples li + li {
+  border-top: 1px dotted var(--ink);
+}
+
+.example-chip {
+  display: block;
+  width: 100%;
+  padding: 8px 12px;
+  background: var(--white);
+  border: 0;
+  color: var(--ink);
+  cursor: pointer;
+  font-size: 13px;
+  line-height: 1.55;
+  text-align: left;
+}
+
+.example-chip:hover {
+  background: var(--ink);
+  color: var(--white);
+}
+
+/* ---------- 알림 / 진행 / 빈 목록 ---------- */
+
+.win--alert,
+.win--progress,
+.win--empty {
+  margin-bottom: 28px;
+}
+
+.win--alert {
+  background: var(--warn);
+}
+
+.win--alert .win-title span {
+  background: var(--warn);
+}
+
+.alert-text {
+  max-width: 72ch;
+  line-height: 1.7;
+}
+
+/* 생성 중: 맥의 줄무늬 진행 막대. 움직이는 요소는 이것 하나뿐 */
+.progress {
+  height: 20px;
+  margin-top: 12px;
+  overflow: hidden;
+  background: var(--white);
+  border: 2px solid var(--ink);
+}
+
+.progress-bar {
+  width: 100%;
+  height: 100%;
+  background: repeating-linear-gradient(
+    -45deg,
+    var(--ink) 0,
+    var(--ink) 6px,
+    var(--white) 6px,
+    var(--white) 12px
+  );
+  background-size: 17px 17px;
+  animation: barber 0.7s linear infinite;
+}
+
+@keyframes barber {
+  to {
+    background-position: 17px 0;
+  }
+}
+
+.empty {
+  display: flex;
+  gap: 22px;
+  align-items: center;
+}
+
+.empty-icon {
+  flex: 0 0 auto;
+}
+
+.empty h2 {
+  font-size: 18px;
+  font-weight: 400;
+}
+
+.empty p {
+  max-width: 44ch;
+  margin-top: 6px;
+  line-height: 1.7;
+  word-break: keep-all;
+}
+
+/* ---------- 결과 ---------- */
+
+.results-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 8px 8px 8px 16px;
+  margin-bottom: 28px;
+  background: var(--white);
+  border: 2px solid var(--ink);
+  box-shadow: 4px 4px 0 var(--ink);
+}
+
+.results-header h2 {
+  font-size: 14px;
+  font-weight: 400;
+}
+
+.results-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  align-items: start;
+  padding: 16px 18px;
+}
+
+.card-title-group {
+  min-width: 0;
+}
+
+.card-time {
+  display: block;
+  color: var(--accent);
+  font-size: 12px;
+}
+
+.card-prompt {
+  max-width: 68ch;
+  margin-top: 4px;
+  line-height: 1.65;
+}
+
+.card-actions {
+  display: flex;
+  flex: 0 0 auto;
+  gap: 8px;
+}
+
+/* 폴더 탭 */
+.card-tabs {
+  display: flex;
+  gap: 4px;
+  padding: 0 18px;
+  border-bottom: 2px solid var(--ink);
+}
+
+.tab {
+  min-height: 32px;
+  padding: 0 20px;
+  background: var(--desk);
+  border: 2px solid var(--ink);
+  border-bottom: 0;
+  border-radius: 8px 8px 0 0;
+  color: var(--ink);
+  cursor: pointer;
+}
+
+.tab:hover {
+  background: var(--white);
+}
+
+.tab--active {
+  margin-bottom: -2px;
+  padding-bottom: 2px;
+  background: var(--white);
+}
+
+.panel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  min-height: 44px;
+  padding: 8px 18px;
+}
+
+.panel-header h3 {
+  font-size: 13px;
+  font-weight: 400;
+}
+
+.dim-readout {
+  color: var(--accent);
+  font-family: var(--font-mono);
+  font-size: 12px;
+}
+
+.preview-content {
+  padding: 0 18px 18px;
+}
+
+/* 투명 영역을 나타내는 체크 무늬 캔버스 */
+.preview-render {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 320px;
+  padding: 34px;
+  background-color: var(--white);
+  background-image:
+    linear-gradient(45deg, #ececec 25%, transparent 25%, transparent 75%, #ececec 75%),
+    linear-gradient(45deg, #ececec 25%, transparent 25%, transparent 75%, #ececec 75%);
+  background-size: 16px 16px;
+  background-position: 0 0, 8px 8px;
+  border: 2px solid var(--ink);
+  box-shadow: inset 2px 2px 0 rgba(0, 0, 0, 0.18);
+}
+
+.preview-error {
+  margin-top: 14px;
+  padding: 10px 12px;
+  background: var(--warn);
+  border: 2px solid var(--ink);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  line-height: 1.6;
+  white-space: pre-wrap;
+}
+
+.code-block {
+  min-height: 320px;
+  margin: 0 18px 18px;
+  padding: 18px 20px;
+  overflow-x: auto;
+  background: var(--ink);
+  color: var(--white);
+  font-family: var(--font-mono);
+  font-size: 13px;
+  line-height: 1.7;
+  tab-size: 2;
+}
+
+/* ---------- 모션 / 반응형 ---------- */
+
+@media (prefers-reduced-motion: reduce) {
+  .progress-bar {
+    animation: none;
+  }
+}
+
+@media (max-width: 960px) {
+  .workspace {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .desktop {
+    padding: 20px 12px 48px;
+  }
+
+  .win-body {
+    padding: 16px 14px 20px;
+  }
+
+  .menubar {
+    gap: 14px;
+    padding: 0 10px;
+    font-size: 12px;
+  }
+
+  .btn-generate {
+    justify-self: stretch;
+  }
+
+  .empty {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .card-header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .card-actions .btn-regenerate,
+  .card-actions .btn-remove {
+    flex: 1;
+  }
+
+  .card-tabs {
+    padding: 0 10px;
+  }
+
+  .preview-content {
+    padding: 0 10px 12px;
+  }
+
+  .preview-render {
+    min-height: 240px;
+    padding: 16px;
+  }
+
+  .code-block {
+    margin: 0 10px 12px;
+  }
+}

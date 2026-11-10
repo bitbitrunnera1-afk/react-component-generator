@@ -1,0 +1,45 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  color-scheme: light;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  --ink: #000000;
+  --white: #ffffff;
+  --desk: #b4cad3;
+  --desk-dot: #8faebb;
+  --accent: #1f2fd6;
+  --warn: #ffe066;
+  --font: 'Galmuri11', 'Galmuri9', 'Malgun Gothic', 'Apple SD Gothic Neo', sans-serif;
+  --font-mono: 'Galmuri Mono 11', 'GalmuriMono11', Consolas, monospace;
+}
+
+body {
+  min-height: 100vh;
+  font-family: var(--font);
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--ink);
+  /* 2px 체크 디더로 만든 바탕화면 */
+  background-color: var(--desk);
+  background-image:
+    linear-gradient(45deg, var(--desk-dot) 25%, transparent 25%, transparent 75%, var(--desk-dot) 75%),
+    linear-gradient(45deg, var(--desk-dot) 25%, transparent 25%, transparent 75%, var(--desk-dot) 75%);
+  background-size: 4px 4px;
+  background-position: 0 0, 2px 2px;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+
+button {
+  -webkit-tap-highlight-color: transparent;
+}
