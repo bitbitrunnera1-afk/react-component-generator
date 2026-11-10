@@ -115,6 +115,28 @@
   line-height: 1.7;
 }
 
+.prompt-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 12px;
+  margin-top: -8px;
+  font-size: 13px;
+}
+
+.prompt-counter {
+  margin-left: auto;
+  font-variant-numeric: tabular-nums;
+}
+
+.prompt-counter--over,
+.prompt-error {
+  background: var(--warn);
+  color: var(--ink);
+  font-weight: 700;
+  padding: 0 6px;
+}
+
 .prompt-textarea::placeholder,
 .api-key-field input::placeholder {
   color: #6b6b6b;
