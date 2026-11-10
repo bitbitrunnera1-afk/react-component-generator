@@ -4,6 +4,7 @@ import { PromptInput } from './components/PromptInput';
 import { ComponentCard } from './components/ComponentCard';
 import { useComponentGenerator } from './hooks/useComponentGenerator';
 import type { Provider } from './types';
+import { loadProvider, saveProvider } from './utils/storage';
 import './App.css';
 
 const PROVIDER_CONFIG = {
@@ -35,13 +36,17 @@ function Win({
 function App() {
   const [apiKey, setApiKey] = useState('');
   const [showKey, setShowKey] = useState(false);
-  const [provider, setProvider] = useState<Provider>('google');
+  const [provider, setProvider] = useState<Provider>(loadProvider);
   const [envKeys, setEnvKeys] = useState<Record<Provider, boolean>>({
     anthropic: false,
     google: false,
   });
-  const { components, isLoading, error, generate, removeComponent, clearAll } =
+  const { components, promptHistory, isLoading, error, generate, removeComponent, clearAll } =
     useComponentGenerator();
+
+  useEffect(() => {
+    saveProvider(provider);
+  }, [provider]);
 
   useEffect(() => {
     fetch('/api/config')
@@ -83,7 +88,7 @@ function App() {
             <p className="lead">
               요청을 적으면 React 컴포넌트가 시안 창으로 열리고, 바로 미리보기와 코드를 확인할 수 있습니다.
             </p>
-            <PromptInput onGenerate={handleGenerate} isLoading={isLoading} />
+            <PromptInput onGenerate={handleGenerate} isLoading={isLoading} history={promptHistory} />
           </Win>
 
           <Win title="실행 설정" label="실행 설정" className="win--settings">
